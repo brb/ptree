@@ -1,0 +1,7 @@
+{application, ptree, [
+    {description, "(Prunable) prefix tree"},
+    {vsn, "0.0.1"},
+    {modules, [ptree]},
+    {registered, []},
+    {applications, [kernel, stdlib, sasl]}
+]}.
