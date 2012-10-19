@@ -9,9 +9,6 @@
 
 -define(NIL, n).
 -define(EXTERNAL, e).
--define(MAX_NODES, 10).
--define(FIRST, 0).
--define(LAST, 9).
 -define(NO_CHILDREN, 
     {?NIL, ?NIL, ?NIL, ?NIL, ?NIL, ?NIL, ?NIL, ?NIL, ?NIL, ?NIL}).
 
