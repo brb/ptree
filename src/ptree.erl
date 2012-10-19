@@ -33,6 +33,8 @@
 -type el() :: [key()].
 -type pnode() :: bitstring().
 
+-export_type([el/0, val/0]).
+
 %% ============================================================================
 
 %% @doc Return empty tree.
@@ -77,6 +79,11 @@ insert_1([], _, <<_:?NODE_S, _:?KEY_S, ?LEAF_T:?TYPE_S, _/bits>>) ->
 insert_1([E|Element], Value,
         <<_:?NODE_S, Key:?KEY_S, Type:?TYPE_S, ValS:?VALUE_S,
             Rest1/bits>>) ->
+    if
+        Type =:= ?LEAF_T -> throw(element_exist);
+        Type =/= ?LEAF_T -> ok
+    end,
+
     <<Val:ValS/bits, ChildrenS:?CHILDREN_S, Rest2/bits>> = Rest1,
     <<Children:ChildrenS/bits, _/bits>> = Rest2,
 
@@ -179,7 +186,7 @@ insert_test() ->
     ElVals = [
         {[4, 2], <<"42">>},
         {[6, 6, 6], <<"666">>},
-        {[6, 6, 6, 9], <<"6669">>}
+        {[6, 0, 9], <<"609">>}
     ],
     T = lists:foldl(fun ({El, Val}, Acc) -> insert(El, Val, Acc) end, empty(),
         ElVals),
@@ -187,6 +194,7 @@ insert_test() ->
     [?assertEqual(V, get(E, T)) || {E, V} <- ElVals],
     ?assertEqual(undefined, get([4, 3], T)),
 
-    ?assertThrow(element_exist, insert([4, 2], <<"omg">>, T)).
+    ?assertThrow(element_exist, insert([4, 2], <<"omg">>, T)),
+    ?assertThrow(element_exist, insert([4, 2, 3], <<"omg">>, T)).
     
 -endif.
