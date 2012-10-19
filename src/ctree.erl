@@ -73,7 +73,8 @@ insert_1([E|Element], Val, {Val0, Children0}) ->
 insert_test() ->
     ElVals = [
         {[4, 2], <<"42">>},
-        {[6, 6, 6], <<"666">>}
+        {[6, 6, 6], <<"666">>},
+        {[6, 0, 9], <<"609">>}
     ],
     T = lists:foldl(fun ({El, Val}, Acc) -> insert(El, Val, Acc) end, empty(),
         ElVals),
