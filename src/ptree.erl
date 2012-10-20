@@ -77,15 +77,13 @@ insert_1([], _, <<_:?NODE_S, _:?KEY_S, ?LEAF_T:?TYPE_S, _/bits>>) ->
     throw(element_exist);
 
 insert_1([E|Element], Value,
-        <<_:?NODE_S, Key:?KEY_S, Type:?TYPE_S, ValS:?VALUE_S,
-            Rest1/bits>>) ->
+        <<_:?NODE_S, Key:?KEY_S, Type:?TYPE_S,
+            ValS:?VALUE_S/integer, Val:ValS/bits,
+            ChildrenS:?CHILDREN_S, Children:ChildrenS/bits, _/bits>>) ->
     if
         Type =:= ?LEAF_T -> throw(element_exist);
         Type =/= ?LEAF_T -> ok
     end,
-
-    <<Val:ValS/bits, ChildrenS:?CHILDREN_S, Rest2/bits>> = Rest1,
-    <<Children:ChildrenS/bits, _/bits>> = Rest2,
 
     {PreChildren, Node0, PostChildren} = split_children(E, Children),
 
